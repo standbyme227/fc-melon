@@ -20,7 +20,6 @@ class Album(models.Model):
     def __str__(self):
 
         return '{title} [{artists}]'.format(
-
             title=self.title,
             artists = ', '.join(self.artists.values_list('name', flat=True))
         )
