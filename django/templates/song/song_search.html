@@ -6,16 +6,22 @@
     <h1>Song Search</h1>
 </div>
 
-<form action=" " method="POST">
+<form  method="POST">
     {% csrf_token %}
 
     <div >
-        <label for="song-search">제목 : </label>
-        <input id="song-search" name="song-search" type="text" class="form-control">
+        <label for="keyword">제목 : </label>
+        <input id="keyword" name="keyword" type="text" class="form-control">
     </div>
 
     <button type="submit">검색하기</button>
 
 </form>
+
+    <ul>
+        {% for song in songs %}
+        <li>{{ song.title }}</li>
+        {% endfor %}
+    </ul>
 
 {% endblock %}
