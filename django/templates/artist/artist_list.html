@@ -1,9 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        {% for artist in artists %}
-        <li>{{ artist.name }}</li>
-        {% endfor %}
-    </ul>
+    {% for artist in artists %}
+    <dl>
+        <h2><dt>{{ artist.name }}</dt></h2>
+        <dd>{{ artist.real_name }}</dd>
+        <dd>{{ artist.nationality }}</dd>
+        <dd>{{ artist.birth_date }}</dd>
+        <dd>{{ artist.constellation }}</dd>
+        <dd>{{ artist.blood_type }}</dd>
+        <dd>{{ artist.intro }}</dd>
+    </dl>
+    {% endfor %}
+
+    <div class="btn-container">
+        <form action="{% url 'artist:artist-add' %}" method="get" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="btn">추가 및 수정하기</button>
+        </form>
+    </div>
 {% endblock %}

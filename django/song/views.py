@@ -10,3 +10,9 @@ def song_list(request):
         'songs': songs,
     }
     return render(request, 'song/song_list.html', context)
+
+def song_search(request):
+
+    # songs = Song.objects.get()
+
+    return render(request, 'song/song_search.html')
