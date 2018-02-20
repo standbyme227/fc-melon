@@ -47,6 +47,7 @@ def song_search(request):
         context['songs_from_title'] = songs_from_title
         # 만약 method가 POST였다면 context에 'songs'가 채워진 상태,
         # GET이면 빈 상태로 render실행
+    context['type'] = 'ASDF'
     return render(request, 'song/song_search.html', context)
 
 
