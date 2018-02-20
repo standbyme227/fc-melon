@@ -16,37 +16,65 @@ def song_list(request):
 def song_search(request):
 
 
-    context = {}
     # songs = Song.objects.get()
 
     keyword = request.GET.get('keyword')
 
 
+    context = {
+        'song_infos':[],
+    }
     if keyword:
-        # Song목록 중 title이 keyword를 포함하는 쿼리셋
-        songs = Song.objects.filter(
-            Q(album__title__contains=keyword) |
-            Q(album__artists__name__contains=keyword) |
-            Q(title__contains=keyword)
-        ).distinct()
-        # 미리 선언한 context의 'songs'키에 QuerySet을 할당
-        context['songs'] = songs
+        # # Song목록 중 title이 keyword를 포함하는 쿼리셋
+        # songs = Song.objects.filter(
+        #     Q(album__title__contains=keyword) |
+        #     Q(album__artists__name__contains=keyword) |
+        #     Q(title__contains=keyword)
+        # ).distinct()
+        # # 미리 선언한 context의 'songs'키에 QuerySet을 할당
+        # context['songs'] = songs
 
-        # Song과 연결된 Artist의 name에 keyword가 포함되는 경우
-        songs_from_artists = Song.objects.filter(
-            album__artists__name__contains=keyword
+
+        # songs_from_artists = Song.objects.filter(album__artists__name__contains=keyword)
+        # songs_from_albums = Song.objects.filter(album__title__contains=keyword)
+        # songs_from_title = Song.objects.filter(title__contains=keyword)
+
+
+        # for type, songs in zip(
+        #         ('아티스트명', '앨범명', '노래제목'),
+        #         (songs_from_artists, songs_from_albums, songs_from_title)):
+        #     context['song_infos'].append({
+        #         'type':type,
+        #         'songs':songs,
+        #     })
+
+        
+        song_infos = (
+            ('아티스트명', Q(album__artists__name__contains=keyword)),
+            # Q는 조건이다. 근데 잘 모르겠다.
+            ('앨범명', Q(album__title__contains=keyword)),
+            ('노래제목', Q(title__contains=keyword)),
         )
-        context['songs_from_artists'] = songs_from_artists
+        # 위의 튜플에 넣어서 언패킹
 
-        # Song과 연결된 Album의 title에 keyword가 포함되는 경우
-        songs_from_albums = Song.objects.filter(album__title__contains=keyword)
-        context['songs_from_albums'] = songs_from_albums
+        for type, q in song_infos:
+            context['song_infos'].append({
+                'type': type,
+                'songs': Song.objects.filter(q),
+            })
 
-        # Song의 title에 keyword가 포함되는 경우
-        songs_from_title = Song.objects.filter(title__contains=keyword)
-        context['songs_from_title'] = songs_from_title
-        # 만약 method가 POST였다면 context에 'songs'가 채워진 상태,
-        # GET이면 빈 상태로 render실행
+        # context['song_infos'].append({
+        #     'type': '아티스트명',
+        #     'songs': songs_from_artists,
+        # })
+        # context['song_infos'].append({
+        #     'type': '앨범명',
+        #     'songs': songs_from_albums,
+        # })
+        # context['song_infos'].append({
+        #     'type': '노래제목',
+        #     'songs': songs_from_title,
+        # })
     context['type'] = 'ASDF'
     return render(request, 'song/song_search.html', context)
 

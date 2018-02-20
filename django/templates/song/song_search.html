@@ -8,19 +8,20 @@
 
 <form  method="get">
     <h1><a href="{% url 'song:song-search' %}">노래 검색</a></h1>
-    <div >
-        <label for="keyword">제목 : </label>
-        <input id="keyword" name="keyword" type="text" class="form-control">
-    </div>
+
+    <label for="keyword">제목 : </label>
+    <input id="keyword" name="keyword" type="text" class="form-control" placeholder="{{ request.GET.keyword }}">
+
 
     <button type="submit">검색하기</button>
 
 </form>
 
 
-
-{% include 'include/song_search_result.html' with type='아티스트명' songs=songs_from_artists only %}
-{% include 'include/song_search_result.html' with type='앨범제목' songs=songs_from_albums only %}
-{% include 'include/song_search_result.html' with type='노래제목' songs=songs_from_title only %}
+{% for song_info in song_infos %}
+{% include 'include/song_search_result.html' with type=song_info.type songs=song_info.songs only %}
+{% endfor %}
 
 {% endblock %}
+
+
