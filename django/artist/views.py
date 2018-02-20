@@ -1,7 +1,10 @@
 import datetime
 
+from bs4 import BeautifulSoup
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from pip._vendor import requests
+
 from artist.models import Artist
 
 
@@ -40,8 +43,41 @@ def artist_add(request):
     #     pass
         return render(request, 'artist/artist_add.html')
 
+def artist_add_from_melon(request):
 
+    context = {
+        'artist_info_list': [],
+    }
 
+    keyword = request.GET.get('keyword')
+    if keyword:
+        url = 'https://www.melon.com/search/artist/index.htm'
+        params = {
+            'q': keyword
+        }
+
+        response = requests.get(url, params)
+        soup = BeautifulSoup(response.text, 'lxml')
+        li_list = soup.select('div#pagelist  ul  li')
+
+        # 구분을 그냥 텍스트로 받는다
+        # 장르는 리스트로 받는다.
+        # 이름, 구분, 장르, 대표곡을 받는다.
+
+        result = []
+        for li in li_list:
+            artist_id = li.select_one('div.artist_info input[type=hidden]').get('value')
+            name = li.select_one('div.artist_info a.ellipsis > b').get_text(strip=True)
+            types = li.select_one('div.artist_info dd.gubun').get_text(strip=True)
+
+            genre = li.find('dd', class_='fc_strong').find('div').get_text(strip=True)
+            repsong = li.find('dd', class_='btn_play').find('a').find('span', class_='songname12').get_text(strip=True)
+            # artist = Artist(artist_id=artist_id, name=name, types=types, genre=genre, repsong=repsong)
+            result.append({
+                artist_id:artist_id
+            })
+
+    return render(request, 'artist/artist_add_from_melon.html', context)
 
 #
 # def post_detail(request, pk):

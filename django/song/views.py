@@ -21,14 +21,14 @@ def song_search(request):
 
     # songs = Song.objects.get()
 
-    keyword = request.GET.get('keyword')
+    # keyword = request.GET.get('keyword')
 
 
     context = {
         'song_infos':[],
     }
     keyword = request.GET.get('keyword')
-    # SongInfo = namedtuple('SongInfo', ['type', 'q']) 원래의 namedtuple
+    # SongInfo = collections.namedtuple('SongInfo', ['type', 'q']) 원래의 namedtuple
     class SongInfo(NamedTuple):
         type :str
         q: Q

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    <h3>멜론에서 아티스트 검색</h3>
+
+    <form  method="get">
+        <label for="keyword">제목 : </label>
+        <input id="keyword" name="keyword" type="text" class="form-control" placeholder="{{ request.GET.keyword }}">
+
+
+        <button type="submit">검색하기</button>
+
+    </form>
+
+    <ul>
+        <li> {{ response }}</li>
+    </ul>
+</div>
+
+{% endblock %}
+
+
