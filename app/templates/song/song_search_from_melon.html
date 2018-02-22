@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div>
+    <h3>멜론에서 노래 검색</h3>
+
+    <form action="">
+        <label for="song-search">제목 :</label>
+        <input type="text" name="song-search" id="song-search" placeholder="노래제목">
+        <button type="submit">검색하기</button>
+    </form>
+
+    {% for song_info_list in songs_info_list %}
+    <form action="{% url 'song:song-add-from-melon' %}" method="post">
+        {% csrf_token %}
+        <ul>
+            <li>
+                <span>{{ song_info_list.title }} [{{ song_info_list.album }}]
+                - {{ song_info_list.artist }} ({{ song_info_list.song_id }})</span>
+                <input type="hidden" name="song_id" value="{{ song_info_list.song_id }}">
+                <button type="submit">등록</button>
+            </li>
+        </ul>
+    </form>
+    {% endfor %}
+
+</div>
+{% endblock %}

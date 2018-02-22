@@ -5,6 +5,7 @@ from artist.models import Artist
 
 
 class Song(models.Model):
+    melon_song_id = models.CharField('멜론 Song ID', max_length=20, blank=True, null=True, unique=True)
     title = models.CharField('곡 제목', max_length=50)
     genre = models.CharField('장르', max_length=100, blank=True)
     lyrics = models.TextField('가사', blank=True)

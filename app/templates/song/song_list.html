@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% for song in songs %}
+    <dl>
+        <h2><dt>제목 : {{ song.title }}</dt></h2>
+        <dd>앨범명 : {{ song.album }}</dd>
+        <dd>장르 : {{ song.genre }}</dd>
+        <dd>가사 : {{ song.lyrics }}</dd>
+    </dl>
+    {% endfor %}
+
+    <div class="btn-container">
+        <form action="{% url 'song:song-search-from-melon' %}" method="get" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="btn">노래 검색하기</button>
+        </form>
+    </div>
+{% endblock %}

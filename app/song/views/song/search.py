@@ -5,16 +5,8 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from song.models import Song
+from ...models import Song
 
-
-def song_list(request):
-
-    songs = Song.objects.all() #.order_by('-pk')
-    context = {
-        'songs': songs,
-    }
-    return render(request, 'song/song_list.html', context)
 
 def song_search(request):
 
