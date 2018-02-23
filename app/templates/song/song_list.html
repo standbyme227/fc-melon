@@ -5,6 +5,7 @@
     {% for song in songs %}
     <dl>
         <h2><dt>제목 : {{ song.title }}</dt></h2>
+        <dd>가수명 : {% for artist in song.artists.all %}{{ artist.name }} {% endfor %}</dd>
         <dd>앨범명 : {{ song.album }}</dd>
         <dd>장르 : {{ song.genre }}</dd>
         <dd>가사 : {{ song.lyrics }}</dd>

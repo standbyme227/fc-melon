@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
+<div class="artist-list-container">
+    <ul class="clearfix">
         {% for album in albums %}
-        <li>{{ album.title }}</li>
+        <li class="clearfix">
+            <a href=""></a>
+            <img src="{% if album.img_cover %}{{ album.img_cover.url }}{% endif %}" alt="" class="cover">
+                <div class="artist-info">
+                    <div class="name">{{ album.title }}</div>
+                    <div>{{ album.genre }}</div>
+                </div>
+            </a>
+        </li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}
+
+

@@ -8,6 +8,11 @@ from django.http import HttpResponse
 from ...models import Song
 
 
+
+__all__ = (
+    'song_search',
+)
+
 def song_search(request):
 
 

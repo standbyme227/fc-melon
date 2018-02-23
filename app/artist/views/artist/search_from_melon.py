@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from pip._vendor import requests
 
 
+
 def artist_search_from_melon(request):
     context = {
         'artist_info_list': [],

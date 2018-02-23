@@ -17,12 +17,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
+from members.views import login_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('', views.index, name='index'),
     path('artist/', include('artist.urls')),
     path('song/', include('song.urls')),
     path('album/', include('album.urls')),
+    path('login/', login_view, name='login'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="login-container">
+    <h3>Login</h3>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="username">ID : </label>
+        <input id="username" name="username" type="text" class="form-control" placeholder="id를 입력해주세요">
+        <label for="password">PW : </label>
+        <input id="password" name="password" type="text" class="form-control" placeholder="pw를 입력해주세요">
+        <button type="submit">login</button>
+    </form>
+
+</div>
+{% endblock %}

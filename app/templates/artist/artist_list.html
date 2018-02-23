@@ -1,22 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% for artist in artists %}
-    <dl>
-        <h2><dt>{{ artist.name }}</dt></h2>
-        <dd>{{ artist.real_name }}</dd>
-        <dd>{{ artist.nationality }}</dd>
-        <dd>{{ artist.birth_date }}</dd>
-        <dd>{{ artist.constellation }}</dd>
-        <dd>{{ artist.blood_type }}</dd>
-        <dd>{{ artist.intro }}</dd>
-    </dl>
-    {% endfor %}
+<div class="artist-list-container">
+    <ul class="clearfix">
+        {% for artist in artists %}
+        <li class="clearfix">
+            <a href="">
+            <img src="{% if artist.image %}{{ artist.image.url }}{% endif %}" alt="" class="cover">
+                <div class="artist-info">
+                    <div class="name">{{ artist.name }}</div>
+                    <div>{{ artist.real_name }}</div>
+                    <div>{{ artist.nationality }}</div>
+                    <div>{{ artist.birth_date }}</div>
+                    <div>{{ artist.constellation }}</div>
+                    <div>{{ artist.get_blood_type_display }}</div>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <div class="btn-container">
-        <form action="{% url 'artist:artist-add' %}" method="get" class="inline">
-            {% csrf_token %}
-            <button type="submit" class="btn">추가 및 수정하기</button>
-        </form>
-    </div>
+<div class="btn-container">
+    <form action="{% url 'artist:artist-search-from-melon' %}" method="get" class="inline">
+        {% csrf_token %}
+        <button type="submit" class="btn">가수 검색하기</button>
+    </form>
+</div>
 {% endblock %}
