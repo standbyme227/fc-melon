@@ -89,7 +89,12 @@ class ArtistManager(models.Manager):
             ext=get_buffer_ext(temp_file),
         )
 
-        artist.image.save(file_name, File(temp_file))
+        # if artist.image:
+        #     artist.image.delete()
+        # 아티스트 이미지가 있다면 지운다.
+        if not artist.image:
+            artist.image.save(file_name, File(temp_file))
+        # 아티스트 이미지가 없다면 만든다.
         return artist, artist_created
 
 

@@ -24,11 +24,3 @@ a {
   clear: both;
   display: block;
 }
-
-dl > dd {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100px;
-  height: 20px;
-}
