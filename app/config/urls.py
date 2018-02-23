@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from members.views import login_view
+from members.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('song/', include('song.urls')),
     path('album/', include('album.urls')),
     path('login/', login_view, name='login'),
-]
+    path('logout/', logout_view, name='logout'),
+    path('signup/', signup_view, name='signup'),
+    ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

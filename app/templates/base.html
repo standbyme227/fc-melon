@@ -10,15 +10,18 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/artist-list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
 </head>
 <body>
 <div class="header-wrap">
     <header class="main-header">
         {% if request.user.is_authenticated %}
         <div>{{ request.user }}로 로그인 중입니다.</div>
+        <div><a href="{% url 'logout' %}">로그아웃</a></div>
         {% else %}
         <div><a href="{% url 'login' %}">로그인 하세용</a></div>
         {% endif %}
+        <div><a href="{% url 'signup' %}">가입하기</a></div>
 
         <div class="search-container">
             <img src="{% static 'images/logo.png' %}" alt="">
