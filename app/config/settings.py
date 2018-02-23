@@ -36,6 +36,7 @@ SECRET_KEY = 'ce_tb(*wq&3-csiil&b8083#-ic&ee!lr3!(-8(7cfafv-+bp+'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'members.User'
 
 
 # Application definition
@@ -43,9 +44,12 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'artist',
     'album',
+    'members',
     'song',
 
     'django_extensions',
+
+
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,6 +122,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 
 
 # Internationalization
