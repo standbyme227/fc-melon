@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="artist-list-container">
-    <a href="{% url 'artist:artist-add' %}">아티스트 추가하기</a>
+    <a href="{% url 'artist:artist-add' %}"><h2>아티스트 추가하기</h2></a>
     <ul class="clearfix">
         {% for artist in artists %}
         <li class="clearfix">
-            <a href="">
+            <a href="{% url 'artist:artist-edit' artist_pk=artist.pk %}">
             <img src="{% if artist.image %}{{ artist.image.url }}{% endif %}" alt="" class="cover">
                 <div class="artist-info">
                     <div class="name">{{ artist.name }}</div>

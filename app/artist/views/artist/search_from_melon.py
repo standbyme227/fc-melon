@@ -4,7 +4,9 @@ from bs4 import BeautifulSoup
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from pip._vendor import requests
+from django.contrib.auth import authenticate
 
+from artist.models import Artist
 
 
 def artist_search_from_melon(request):
@@ -38,10 +40,12 @@ def artist_search_from_melon(request):
             url_img_cover = li.select_one('a.thumb img').get('src')
             artist_id = re.search(p, href).group(1)
 
+
             artist_info_list.append({
                 'name': name,
                 'url_img_cover': url_img_cover,
                 'artist_id': artist_id,
+                'is_exist': Artist.objects.filter(melon_id=artist_id).exists(),
             })
 
         context['artist_info_list'] = artist_info_list

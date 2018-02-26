@@ -22,7 +22,11 @@
                 <img src="{{ artist_info.url_img_cover }}" alt="" height="100">
                 <span>{{ artist_info.artist_id }} | {{ artist_info.name }}</span>
                 <input type="hidden" name="artist_id" value="{{ artist_info.artist_id }}">
-                <button type="submit">등록</button>
+                {% if artist_info.is_exist %}
+                    <button type="submit">DB애 업데이트</button>
+                {% else %}
+                    <button type="submit">DB에 등록하기</button>
+                {% endif %}
             </li>
         </ul>
     </form>
