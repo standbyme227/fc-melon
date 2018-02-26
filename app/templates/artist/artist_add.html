@@ -3,7 +3,7 @@
 {% block content %}
 
 <div>
-    <h1>Artist add</h1>
+    <h2>직접 아티스트 추가하기</h2>
 </div>
 
 <form action="" method="POST">
@@ -44,6 +44,19 @@
     </div>
 
     <button type="submit">등록</button>
+
+</form>
+
+
+<div>
+    <h2>멜론에서 아티스트 검색하기</h2>
+</div>
+
+<form action="{% url 'artist:artist-search-from-melon' %}" method="">
+
+    <label for="keyword">이름</label>
+    <input id="keyword" name="keyword" type="text" placeholder="가수 이름">
+    <button type="submit">검색</button>
 
 </form>
 
