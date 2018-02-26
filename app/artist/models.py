@@ -2,13 +2,16 @@ import re
 from datetime import datetime
 
 from bs4 import BeautifulSoup
+from django.conf import settings
 from pip._vendor import requests
 from django.db import models
 from io import BytesIO
 from django.core.files import File
 from pathlib import Path
 
+from members.models import User
 from utils.file import *
+from django.utils import timezone
 
 
 class ArtistManager(models.Manager):
@@ -67,9 +70,6 @@ class ArtistManager(models.Manager):
         else:
             blood_type = Artist.BLOOD_TYPE_OTHER
 
-
-
-
         artist, artist_created = self.update_or_create(
             melon_id=artist_id,
             defaults={
@@ -112,8 +112,6 @@ class Artist(models.Model):
         (BLOOD_TYPE_OTHER, '기타'),
     )
 
-
-
     melon_id = models.CharField('멜론 Artist ID', max_length=20, blank=True, null=True, unique=True)
     image = models.ImageField('프로필 이미지', upload_to='artist', blank=True)
     # upload_to는 media폴더를 기준으로 그안의 경로를 지정
@@ -125,29 +123,87 @@ class Artist(models.Model):
     blood_type = models.CharField('혈액형', max_length=50, blank=True, choices=CHOICES_BLOOD_TYPE)
     # choices를 넣어야지만 위의 선택을 이용할 수 있다.
     intro = models.TextField('소개', blank=True)
+    # likes = models.IntegerField(default=0)
+
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='ArtistLike',
+        related_name='like_artists',
+        blank=True,
+    )
 
     objects = ArtistManager()
 
     def __str__(self):
         return self.name
 
-        # response = requests.get(url_img_cover)
-        # binary_data = response.content
-        # temp_file = BytesIO()
-        # temp_file.write(binary_data)
-        # temp_file.seek(0)
+    def toggle_like_user(self, user):
+        # 자신이 'artist이며 user가 주어진 user인 ArtistLike를 가져오거나 없으면 생성
+        like, like_created = self.like_user_info_list.get_or_create(user=user)
+        # 만약 이미 잇엇을 경우 (새로 생성 X)
+        if not like_created:
+            # Like를 지워줌
+            like.delete()
+        # 생성여부를 반환
+        return like_created
 
-        # artist, artist_created = self.get_or_create(melon_id=artist_id)
-        #
-        # artist.name = name
-        # # artist.real_name = real_name
-        # artist.nationality = nationality
-        # if birth_date_str == None:
-        #     pass
+        # if self.like_users.filter(user=user).exists():
+        #     self.like_users.filter(user).delete()
         # else:
-        #     artist.birth_date = datetime.strptime(birth_date_str, '%Y.%m.%d')
-        # artist.constellation = constellation
-        # artist.blood_type = blood_type
-        # artist.save()
-        #
-        # return artist, artist_created
+        #     self.like_users.create(user=user)
+
+
+        # # 자신이 artist이며, 주어진 user와의 ArtistLike의 QuerySet
+        # query = ArtistLike.objects.filter(artist=self, user=user)
+        # # QuerySet이 존재할 졍우
+        # if query.exists():
+        #     query.delete()
+        #     return False
+        # # QuerySet이 존재하지 않을 경우
+        # else:
+        #     ArtistLike.objects.create(artist=self, user=user)
+        #     return True
+
+
+class ArtistLike(models.Model):
+    artist = models.ForeignKey(Artist, related_name='like_user_info_list', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_artist_info_list', on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            ('artist', 'user'),
+        )
+
+    def __str__(self):
+        return '"{artist}"의 좋아요({username}, {date})'.format(
+            artist=self.artist.name,
+            username=self.user.username,
+            date=datetime.strftime(
+                timezone.localtime(self.created_date),
+                '%Y.%m.%d')
+        )
+
+    # class Meta:
+    #     verbose_name_plural = 'intermediate - Postlike'
+
+    # response = requests.get(url_img_cover)
+    # binary_data = response.content
+    # temp_file = BytesIO()
+    # temp_file.write(binary_data)
+    # temp_file.seek(0)
+
+    # artist, artist_created = self.get_or_create(melon_id=artist_id)
+    #
+    # artist.name = name
+    # # artist.real_name = real_name
+    # artist.nationality = nationality
+    # if birth_date_str == None:
+    #     pass
+    # else:
+    #     artist.birth_date = datetime.strptime(birth_date_str, '%Y.%m.%d')
+    # artist.constellation = constellation
+    # artist.blood_type = blood_type
+    # artist.save()
+    #
+    # return artist, artist_created
