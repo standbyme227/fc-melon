@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+    img_profile = models.ImageField(upload_to='user', blank=True)
 
     def toggle_like_artist(self, artist):
         like, like_created = self.like_artist_info_list.get_or_create(artist=artist)

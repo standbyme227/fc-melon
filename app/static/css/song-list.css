@@ -1,0 +1,10 @@
+div.song-list-wrap {
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+div.song-list-wrap div a {
+  text-decoration: none;
+  color: black;
+}
