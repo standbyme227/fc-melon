@@ -3,12 +3,23 @@
 {% block content %}
 
 <div>
-    <h2>아티스트 정보 수정하기</h2>
+    <h2>멜론에서 노래 검색하기</h2>
+</div>
+
+<form action="{% url 'song:song-search-from-melon' %}" method="">
+    <label for="keyword">이름</label>
+    <input id="keyword" name="keyword" type="text" placeholder="가수 이름">
+    <button type="submit">검색</button>
+</form>
+
+
+<div>
+    <h2>직접 노래 추가하기</h2>
 </div>
 
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {% for field in artist_form %}
+    {% for field in song_form %}
     <div>
         <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
         {{ field }}
@@ -21,9 +32,8 @@
         {% endif %}
     </div>
     {% endfor %}
-    <button type="submit"> 수정완료</button>
+    <button type="submit"> 등록</button>
 </form>
 
 
 {% endblock %}
-

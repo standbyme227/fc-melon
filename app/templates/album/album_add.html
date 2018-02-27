@@ -3,12 +3,12 @@
 {% block content %}
 
 <div>
-    <h2>아티스트 정보 수정하기</h2>
+    <h2>직접 앨범 추가하기</h2>
 </div>
 
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {% for field in artist_form %}
+    {% for field in album_form %}
     <div>
         <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
         {{ field }}
@@ -21,9 +21,8 @@
         {% endif %}
     </div>
     {% endfor %}
-    <button type="submit"> 수정완료</button>
+    <button type="submit"> 등록</button>
 </form>
 
 
 {% endblock %}
-

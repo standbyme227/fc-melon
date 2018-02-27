@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from album.models import Album
 from artist.models import Artist
@@ -5,6 +6,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup, NavigableString
 from pip._vendor import requests
 import re
+from django.utils import timezone
 
 
 class SongManager(models.Manager):
@@ -100,6 +102,13 @@ class Song(models.Model):
     album = models.ForeignKey(Album, verbose_name='앨범', on_delete=models.CASCADE, blank=True, null=True)
     artists = models.ManyToManyField(Artist, verbose_name='아티스트 목록', blank=True)
 
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,  # 이게 유저를 settings에서 불러온거다.
+        through='SongLike',  # MTM의 중개모델이 뭔지를 지정
+        related_name='like_songs',  # related_manager의 이름을 지정한다.
+        blank=True,
+    )
+
     @property
     def release_date(self):
         return self.album.release_date
@@ -124,6 +133,16 @@ class Song(models.Model):
 
         # 불러오는건 album이었지만 album에 str부분이 title이라서 이렇게 나온거 같다.
 
+    def toggle_like_user(self, user):
+        # 자신이 'artist이며 user가 주어진 user인 ArtistLike를 가져오거나 없으면 생성
+        like, like_created = self.like_user_info_list.get_or_create(user=user)
+        # 만약 이미 잇엇을 경우 (새로 생성 X)
+        if not like_created:
+            # Like를 지워줌
+            like.delete()
+        # 생성여부를 반환
+        return like_created
+
 
 class ArtistSong(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
@@ -134,3 +153,18 @@ class ArtistSong(models.Model):
 
     def __str__(self):
         pass
+
+
+class SongLike(models.Model):
+    song = models.ForeignKey(Song, related_name='like_user_info_list', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_song_info_list', on_delete=models.CASCADE)
+    created_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return '{song}을 좋아합니다. -{user}, {date}-'.format(
+            song=self.song.title,
+            user=self.user.username,
+            date=datetime.strftime(
+                timezone.localtime(self.created_date),
+                '%Y.%m.%d')
+        )

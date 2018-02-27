@@ -9,6 +9,13 @@ class User(AbstractUser):
         if not like_created:
             like.delete()
         return like_created
+
+    def toggle_like_song(self, song):
+        like, like_created = self.like_song_info_list.get_or_create(song=song)
+        if not like_created:
+            like.delete()
+        return like_created
+
     pass
 
 # DB가 저장될 수 있는 테이블이랄까??????

@@ -4,9 +4,8 @@
 <div class="artist-list-container">
     <a href="{% url 'album:album-add' %}"><h2>앨범 추가하기</h2></a>
     <ul class="clearfix">
-        {% for album in albums %}
         <li class="clearfix">
-            <a href="{% url 'album:album-detail' album_pk=album.pk %}">
+            <a href=""></a>
             <img src="{% if album.img_cover %}{{ album.img_cover.url }}{% endif %}" alt="" class="cover">
                 <div class="artist-info">
                     <div class="name">{{ album.title }}</div>
@@ -16,6 +15,7 @@
                     {% if request.user.is_authenticated %}
                     <form action=" {% url 'album:album-like-toggle' album_pk=album.pk %}" method="post">
                         {% csrf_token %}
+                        <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
                         {% if request.user in album.like_users.all %}
                             <button type="submit">좋아요 취소</button>
                         {% else %}
@@ -31,15 +31,7 @@
                 </div>
             </a>
         </li>
-        {% endfor %}
     </ul>
-</div>
-
-<div class="btn-container">
-    <form action="{% url 'album:album-search-from-melon' %}" method="get" class="inline">
-        {% csrf_token %}
-        <button type="submit" class="btn">앨범 검색하기</button>
-    </form>
 </div>
 {% endblock %}
 

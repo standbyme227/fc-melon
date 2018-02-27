@@ -24,11 +24,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', views.index, name='index'),
+
     path('artist/', include('artist.urls')),
     path('song/', include('song.urls')),
     path('album/', include('album.urls')),
+
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    path('facebook-login/', facebook_login, name='facebook-login'),
     path('signup/', signup_view, name='signup'),
     ]
 

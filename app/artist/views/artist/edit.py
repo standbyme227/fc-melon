@@ -22,3 +22,4 @@ def artist_edit(request, artist_pk):
     }
     return render(request, 'artist/artist_edit.html', context)
 
+

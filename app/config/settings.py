@@ -38,6 +38,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'members.User'
 
+FACEBOOK_APP_ID = '159405154869976'
+FACEBOOK_SECRET_CODE = 'dca42d773061044ff7cfc11ca1193dca'
+
 
 # Application definition
 

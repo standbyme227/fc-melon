@@ -6,6 +6,7 @@
     <h3>Login</h3>
 
     <form action="" method="post">
+        <h3>아이디로 로그인</h3>
         {% csrf_token %}
         <label for="username">ID : </label>
         <input id="username" name="username" type="text" class="form-control" placeholder="id를 입력해주세요">
@@ -14,5 +15,6 @@
         <button type="submit">login</button>
     </form>
 
+    <a href="https://www.facebook.com/v2.12/dialog/oauth?client_id=159405154869976&redirect_uri=http://localhost:8000/facebook-login/">페이스북 로그인</a>
 </div>
 {% endblock %}

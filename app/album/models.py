@@ -1,5 +1,7 @@
 import re
 
+from django.conf import settings
+
 from artist.models import Artist
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -10,6 +12,7 @@ from django.core.files import File
 from pathlib import Path
 from django.http import HttpResponse
 from utils.file import *
+from django.utils import timezone
 
 
 class AlbumManager(models.Manager):
@@ -38,6 +41,7 @@ class AlbumManager(models.Manager):
         # url_img_cover = re.search(url_img_cover_pattern, url_img_cover_link)
 
         release_date = description_dict.get('발매일')
+        genre = description_dict.get('장르')
 
         # response = requests.get(url_img_cover)
         # # url_img_cover는 이미지의 URL
@@ -77,6 +81,13 @@ class Album(models.Model):
     #  Album의 artist는 정방향참조 가능... 역참조와 정방향참조는 뭔가???
     release_date = models.DateField(max_length=50, blank=True, null=True)
 
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,  # 이게 유저를 settings에서 불러온거다.
+        through='AlbumLike',  # MTM의 중개모델이 뭔지를 지정
+        related_name='like_albums',  # related_manager의 이름을 지정한다.
+        blank=True,
+    )
+
     # genre = models.CharField(max_length=50, blank=True,)
 
     # publisher = models.CharField(max_length=50, blank=True,)
@@ -94,3 +105,28 @@ class Album(models.Model):
         #     artists = ', '.join(self.artists.values_list('name', flat=True))
         # )
         return self.title
+
+    def toggle_like_user(self, user):
+        # 자신이 'artist이며 user가 주어진 user인 ArtistLike를 가져오거나 없으면 생성
+        like, like_created = self.like_user_info_list.get_or_create(user=user)
+        # 만약 이미 잇엇을 경우 (새로 생성 X)
+        if not like_created:
+            # Like를 지워줌
+            like.delete()
+        # 생성여부를 반환
+        return like_created
+
+
+class AlbumLike(models.Model):
+    album = models.ForeignKey(Album, related_name='like_user_info_list', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='like_album_info_list', on_delete=models.CASCADE)
+    created_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return '{song}을 좋아합니다. -{user}, {date}-'.format(
+            song=self.album.title,
+            user=self.user.username,
+            date=datetime.strftime(
+                timezone.localtime(self.created_date),
+                '%Y.%m.%d')
+        )
