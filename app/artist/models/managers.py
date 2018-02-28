@@ -1,26 +1,20 @@
-import re
 from datetime import datetime
 
 from bs4 import BeautifulSoup
-from django.conf import settings
-from pip._vendor import requests
-from django.db import models
-from io import BytesIO
-from django.core.files import File
-from pathlib import Path
 
-from members.models import User
+from django.db import models
+
 from utils.file import *
-from django.utils import timezone
 
 __all__ = (
     'ArtistManager',
 )
 
 
-
 class ArtistManager(models.Manager):
     def update_or_create_from_melon(self, artist_id):
+
+        from .artist import Artist
 
         url = f'https://www.melon.com/artist/detail.htm'
         params = {

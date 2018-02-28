@@ -12,6 +12,7 @@ from pathlib import Path
 from members.models import User
 from utils.file import *
 from django.utils import timezone
+from .artist import Artist
 
 __all__ = (
     'ArtistLike',

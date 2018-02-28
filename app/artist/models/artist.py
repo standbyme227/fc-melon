@@ -1,22 +1,12 @@
-import re
-from datetime import datetime
-
-from bs4 import BeautifulSoup
 from django.conf import settings
-from pip._vendor import requests
 from django.db import models
-from io import BytesIO
-from django.core.files import File
-from pathlib import Path
 
-from members.models import User
-from utils.file import *
-from django.utils import timezone
+from .artist_youtube import ArtistYouTube
+from .managers import ArtistManager
 
 __all__ = (
     'Artist',
 )
-
 
 
 class Artist(models.Model):
@@ -53,6 +43,16 @@ class Artist(models.Model):
         blank=True,
     )
 
+    youtube_videos = models.ManyToManyField(
+        ArtistYouTube,
+        related_name='artists',
+        blank=True,
+    )
+
+
+
+
+
     objects = ArtistManager()
 
     def __str__(self):
@@ -72,7 +72,6 @@ class Artist(models.Model):
         #     self.like_users.filter(user).delete()
         # else:
         #     self.like_users.create(user=user)
-
 
         # # 자신이 artist이며, 주어진 user와의 ArtistLike의 QuerySet
         # query = ArtistLike.objects.filter(artist=self, user=user)
