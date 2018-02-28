@@ -37,17 +37,38 @@
             </div>
         </li>
     </ul>
-	<h3>관련 YouTube영상</h3>
-	<ul class="youtube-search-list">
-		{% for item in youtube_items %}
-		<li>
-            <div>{{ item.snippet.title }}</div>
-			<a href="https://youtu.be/{{ item.id.videoId }}" target="_blank">
-				<img src="{{ item.snippet.thumbnails.high.url }}" alt="">
-			</a>
-		</li>
-		{% endfor %}
-	</ul>
+
+
+    <ul>
+        {% for video in artist.youtube_videos.all %}
+        <div><h4>{{ video.title }}</h4></div>
+        <li>
+            <a href="https://youtu.be/{{ item.id.videoId }}" target="_blank">
+                <img src="{{ item.snippet.thumbnails.medium.url }}" alt="">
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h3>관련 YouTube영상</h3>
+    <ul class="youtube-search-list">
+        {% for item in youtube_items %}
+        <div><h4>{{ item.snippet.title }}</h4></div>
+        <li>
+            <a href="https://youtu.be/{{ item.id.videoId }}" target="_blank">
+                <img src="{{ item.snippet.thumbnails.medium.url }}" alt="">
+            </a>
+            <form action="{% url 'artist:artist-add-youtube' artist_pk=artist.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="youtube_id" value="{{ item.id.vedioId }}">
+                <input type="hidden" name="'title" value="{{ item.snippet.title }}">
+                <input type="hidden" name="url_thumbnail" value="{{ item.snippet.thumbnail.high.url }}">
+                <input type="hidden" name="next-path" value="">
+                <button type="submit">DB에 저장</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 

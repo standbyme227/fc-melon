@@ -26,11 +26,8 @@ def album_search_from_melon(request):
         }
 
         response = requests.get(url, params)
-
         print(response)
-
         soup = BeautifulSoup(response.text, 'lxml')
-
         album_info_list = []
 
         for li in soup.select('form#frm div > ul.album11_ul > li'):
