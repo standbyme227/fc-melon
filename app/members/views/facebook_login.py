@@ -10,15 +10,16 @@ __all__ = (
     'facebook_login',
 )
 
-def facebook_login(request):
+def facebook_login_backup(request):
     code = request.GET.get('code')
     user = authenticate(request, code=code)
     login(request, user)
     return redirect('index')
 
 
-def facebook_login_backup(request):
+def facebook_login(request):
     client_id = settings.FACEBOOK_APP_ID,
+    #WebApp의 FacebookID다.
     redirect_uri = 'http://localhost:8000/facebook-login/'
     client_secret = settings.FACEBOOK_SECRET_CODE
     code = request.GET['code']
@@ -28,12 +29,15 @@ def facebook_login_backup(request):
         'client_id': client_id,
         'redirect_uri': redirect_uri,
         'client_secret': client_secret,
+        #client_id의 비밀번
         'code': code,
     }
     response = requests.get(url, params)
     response_dict = response.json()
     for key, value in response_dict.items():
         print(f'{key}:{value}')
+
+    return HttpResponse(str(code))
 
     url = 'https://graph.facebook.com/v2.12/me'
     params = {

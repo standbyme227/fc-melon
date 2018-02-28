@@ -44,6 +44,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'members.backends.FacebookBackend',
 ]
+YOUTUBE_API_KEY = 'AIzaSyDZVDGYUluq7ispCPgPRAXHdy9jRq5Ua1A'
 
 
 
