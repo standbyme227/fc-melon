@@ -6,3 +6,4 @@ from .detail import *
 from .edit import *
 from .like import *
 from .add import *
+from .delete import *

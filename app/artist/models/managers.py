@@ -1,9 +1,6 @@
 from datetime import datetime
-
 from bs4 import BeautifulSoup
-
 from django.db import models
-
 from utils.file import *
 
 __all__ = (
@@ -12,6 +9,14 @@ __all__ = (
 
 
 class ArtistManager(models.Manager):
+
+    def to_dict(self):
+        result = []
+        for instance in  self.get_queryset():
+            result.append(instance.to_json())
+        return result
+
+
     def update_or_create_from_melon(self, artist_id):
 
         from .artist import Artist

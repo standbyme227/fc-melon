@@ -7,27 +7,24 @@ from django.http import HttpResponse
 
 from ...models import Song
 
-
-
 __all__ = (
     'song_search',
 )
 
+
 def song_search(request):
-
-
     # songs = Song.objects.get()
 
     # keyword = request.GET.get('keyword')
 
-
     context = {
-        'song_infos':[],
+        'song_infos': [],
     }
     keyword = request.GET.get('keyword')
+
     # SongInfo = collections.namedtuple('SongInfo', ['type', 'q']) 원래의 namedtuple
     class SongInfo(NamedTuple):
-        type :str
+        type: str
         q: Q
 
     if keyword:
@@ -51,7 +48,6 @@ def song_search(request):
                 'songs': Song.objects.filter(q),
             })
 
-
     context['type'] = 'ASDF'
     return render(request, 'song/song_search.html', context)
 
@@ -63,8 +59,6 @@ def song_search(request):
     # ).distinct()
     # # 미리 선언한 context의 'songs'키에 QuerySet을 할당
     # context['songs'] = songs
-
-
 
     # songs_from_artists = Song.objects.filter(album__artists__name__contains=keyword)
     # songs_from_albums = Song.objects.filter(album__title__contains=keyword)
@@ -78,8 +72,6 @@ def song_search(request):
     #         'songs':songs,
     #     })
 
-
-
     # context['song_infos'].append({
     #     'type': '아티스트명',
     #     'songs': songs_from_artists,
@@ -92,8 +84,6 @@ def song_search(request):
     #     'type': '노래제목',
     #     'songs': songs_from_title,
     # })
-
-
 
     # if keyword:
     #     songs_from_artists = Song.objects.filter(album__artists__name__contains=keyword).distinct()

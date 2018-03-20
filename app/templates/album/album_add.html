@@ -3,6 +3,16 @@
 {% block content %}
 
 <div>
+    <h2>멜론에서 앨범 검색하기</h2>
+</div>
+
+<form action="{% url 'album:album-search-from-melon' %}" method="">
+    <label for="keyword">앨범제목</label>
+    <input type="text" id="keyword" name="keyword" placeholder="앨범 제목">
+    <button type="submit">검색</button>
+</form>
+
+<div>
     <h2>직접 앨범 추가하기</h2>
 </div>
 

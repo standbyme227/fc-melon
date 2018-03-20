@@ -16,14 +16,13 @@ __all__ = (
 def song_search_from_melon(request):
     context = {'songs_info_list': []}
 
-    keyword = request.GET.get('song-search')
+    keyword = request.GET.get('keyword')
 
     if keyword:
 
         url = 'https://www.melon.com/search/song/index.htm'
         params = {
             'q': keyword,
-            'section': 'song',
         }
 
         response = requests.get(url, params)
@@ -37,7 +36,7 @@ def song_search_from_melon(request):
         # 위의 공식과 아래 공식은 같은 효과를 지닌다.
         # tr_list = soup.find('form', id = 'frm_defaultList').find('table').find('tbody').find('tr')
 
-        songs_info_list = []
+        song_info_list = []
         # result라는 빈리스트를 생성
         for tr in tr_list:
             song_id = tr.select_one('td:nth-of-type(1) input[type=checkbox]').get('value')
@@ -49,13 +48,13 @@ def song_search_from_melon(request):
                 strip=True)
             album = tr.select_one('td:nth-of-type(5) a').get_text(strip=True)
 
-            songs_info_list.append({
+            song_info_list.append({
                 'song_id': song_id,
                 'title': title,
                 'artist': artist,
                 'album': album,
             })
 
-        context['songs_info_list'] = songs_info_list
+        context['song_info_list'] = song_info_list
 
     return render(request, 'song/song_search_from_melon.html', context)

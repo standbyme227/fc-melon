@@ -7,32 +7,39 @@
         <li class="clearfix">
             <a href=""></a>
             <img src="{% if album.img_cover %}{{ album.img_cover.url }}{% endif %}" alt="" class="cover">
-                <div class="artist-info">
-                    <div class="name">{{ album.title }}</div>
-                    <div>{{ album.genre }}</div>
-                    <div>{{ album.release_date }}</div>
+            <div class="artist-info">
+                <div class="name">{{ album.title }}</div>
+                <div>{{ album.genre }}</div>
+                <div>{{ album.release_date }}</div>
 
-                    {% if request.user.is_authenticated %}
-                    <form action=" {% url 'album:album-like-toggle' album_pk=album.pk %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
-                        {% if request.user in album.like_users.all %}
-                            <button type="submit">좋아요 취소</button>
-                        {% else %}
-                            <button type="submit">좋아요</button>
-                        {% endif %}
-                    </form>
-
-                    <form action=" {% url 'album:album-edit' album_pk=album.pk %}" method="">
-                        {% csrf_token %}
-                            <button type="submit">수정하기</button>
-                    </form>
+                {% if request.user.is_authenticated %}
+                <form action=" {% url 'album:album-like-toggle' album_pk=album.pk %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next-path" value="{{ request.get_full_path }}">
+                    {% if request.user in album.like_users.all %}
+                    <button type="submit">좋아요 취소</button>
+                    {% else %}
+                    <button type="submit">좋아요</button>
                     {% endif %}
-                </div>
+                </form>
+
+                <form action=" {% url 'album:album-edit' album_pk=album.pk %}" method="">
+                    {% csrf_token %}
+                    <button type="submit">수정하기</button>
+                </form>
+                <form action=" {% url 'album:album-delete' album_pk=album.pk %}" method="">
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('정말 삭제하시겟습니까?')">삭제하기</button>
+                </form>
+                {% endif %}
+
+            </div>
             </a>
         </li>
     </ul>
 </div>
+
+
 {% endblock %}
 
 

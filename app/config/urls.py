@@ -25,14 +25,19 @@ urlpatterns = [
 
     path('', views.index, name='index'),
 
-    path('artist/', include('artist.urls')),
+    path('artist/', include('artist.urls.views')),
     path('song/', include('song.urls')),
-    path('album/', include('album.urls')),
+    path('album/', include('album.urls.views')),
+
+    path('api/artist/', include('artist.urls.apis')),
+    path('api/album/', include('album.urls.apis')),
 
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('facebook-login/', facebook_login, name='facebook-login'),
     path('signup/', signup_view, name='signup'),
-    ]
+
+    path('send/', include('send.urls')),
+]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

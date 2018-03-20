@@ -23,3 +23,4 @@ def song_add_from_melon(request):
         Song.objects.update_or_create_from_melon(song_id)
 
         return redirect('song:song-list')
+
